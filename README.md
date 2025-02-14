@@ -40,25 +40,24 @@ cd python-microservice
 
 2. **Configurations**
 
-Ceci doit être fait après avoir installé `venv` dans le projet.
+Cette tâche doit être lancée après avoir installé `venv` dans le projet.
 
 ```bash
 make init
 ```
 
-3. **Execution des taches**
+3. **Execution des tâches**
 
-Cette commande lance le site en local. Vous pouvez changer les variables d'environnements dans un fichier `.env`. Le
-fichier `.env.template` sert de repère des variables à utiliser pour le projet. Si vous êtes sous macOS, il est
-nécessaire d'utiliser le port `5001`
+Cette commande lance le site en local avec `flask`. Vous pouvez changer les variables d'environnements dans un fichier
+`.env`. Le fichier `.env.template` sert de repère des variables à utiliser pour le projet. Si vous êtes sous macOS, il
+est nécessaire d'utiliser le port `5001`. Ce lien sera utilisé par défault une fois que la tâche est
+lancée : http://localhost:5000.
 
 ```bash
 make run
 ```
 
-Par défaut, ce lien sera utilisé : http://localhost:5000.
-
-Cette commande lance les tests unitaires. Il faut que le site soit ouvert pour lancer les tests.
+Cette commande lance les tests unitaires avec `pytest`. Il faut que le site soit ouvert pour lancer les tests.
 
 ```bash
 make test
@@ -73,7 +72,7 @@ make build
 ## Structure du Projet
 
 - app.py : Définit l'API Flask avec les endpoints `/bmi` et `/bmr`.
-- classes : Les classes Python du projet.
+- classes : Les classes du projet sous Python.
     - person.py : Contient les fonctions utilitaires pour calculer l'IMC et le TMB.
 - tests : Les tests unitaires.
     - test_health_calculator.py : Les tests unitaires pour valider l'API.
@@ -87,14 +86,17 @@ make build
 ## Déploiement sur Azure
 
 1. **Créer un Resource Group**
-    - Créez un nouveau Resource Group pour héberger le service de l'application.
+
+Créez un nouveau Resource Group pour héberger le service de l'application ayant comme nom "healthapp-python".
 
 2. **Créer un Azure App Service**
-    - Créez un nouveau Web App dans Azure App Service pour héberger l'application.
+
+Créez un nouveau Web App dans Azure App Service pour héberger l'application ayant comme nom "healthapp-python".
 
 3. **Configurer le profil de déploiement**
-    - Ajoutez un secret dans les paramètres du dépôt GitHub nommé `AZURE_CREDENTIALS` et collez le contenu du secret
-      comme ceci :
+
+Ajoutez un secret dans les paramètres du dépôt GitHub nommé `AZURE_CREDENTIALS` et collez le contenu du secret comme
+ceci :
 
 ```json
 {
@@ -105,6 +107,18 @@ make build
 }
 ```
 
+Pour obtenir leurs valeurs, il faut faire ces actions suivantes :
+
+- `clientSecret`, `clientId` et `tenantId` :
+    - Allez dans Microsoft Entra ID > App registrations, puis allez sur votre application.
+    - Copiez les valeurs "Application (client) ID" et "Directory (tenant) ID" dans `clientId` et `tenantId`
+      respectivement.
+    - Dans l'application, allez sur Certificates & secrets et créez une clé.
+    - Copiez la valeur depuis la colonne "Value" et collez la pour `clientSecret`.
+- `subscriptionId` :
+    - Allez dans Subscriptions, puis copiez la valeur depuis la colonne "Subscription ID" dans `subscriptionId`
+
 4. **Déclencher le déploiement**
-    - Poussez les modifications de code vers la branche principale pour déclencher le pipeline CI/CD et déployer sur
-      Azure.
+
+Poussez les modifications de code vers la branche principale (`main`) pour déclencher le pipeline CI/CD et déployer sur
+Azure.
