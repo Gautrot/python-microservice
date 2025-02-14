@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Calculator Service</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<h1>Health Calculator Service</h1>
+<p>Le service tourne !</p>
+<ul style="text-align: left;">
+    <li>
+        <a href="/apidocs">Swagger (API)</a>
+    </li>
+    <li>
+        <a href="/bmi">Calculette BMI</a>
+    </li>
+    <li>
+        <a href="/bmr">Calculette BMR</a>
+    </li>
+</ul>
+</body>
+</html>

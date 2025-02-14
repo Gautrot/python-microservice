@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMR Calculator</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Calculateur BMR</h1>
+    <form id="bmr-form">
+        <div>
+            <label for="height">Hauteur (cm):</label>
+            <input type="number" id="height" name="height" required>
+        </div>
+        <div>
+            <label for="weight">Poids (kg):</label>
+            <input type="number" id="weight" name="weight" required>
+        </div>
+        <div>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+        </div>
+        <div>
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+        </div>
+        <button type="submit">Calculer le BMR</button>
+    </form>
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    document.getElementById('bmr-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const height = document.getElementById('height').value;
+        const weight = document.getElementById('weight').value;
+        const age = document.getElementById('age').value;
+        const gender = document.getElementById('gender').value;
+
+        fetch('/api/bmr', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({height, weight, age, gender})
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Your BMR is: ${data.bmr.toFixed(2)} kcal/day`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+</script>
+</body>
+</html>

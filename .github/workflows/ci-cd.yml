@@ -1,0 +1,26 @@
+name: CI/CD Pipeline
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-test-deploy:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: | # command
+    - name: Run tests
+      run: | # command
+    - name: Build Docker image
+      run: | # command
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'health-calculator-app' # Replace with your Azure app name
+        publish-profile: ${{ secrets.AZURE_WEBAP
