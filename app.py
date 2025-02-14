@@ -6,7 +6,6 @@ import os
 
 from classes.person import Person
 
-load_dotenv()
 app = Flask(__name__)
 Swagger(app)
 
@@ -140,7 +139,7 @@ def bmr_page() -> Response | str:
 
 if __name__ == '__main__':
     app.run(
-        host=os.getenv("FLASK_HOST", '0.0.0.0'),
-        port=os.getenv("FLASK_PORT", 5000),
-        debug=os.getenv("FLASK_DEBUG", False),
+        os.getenv("FLASK_HOST", '0.0.0.0'),
+        os.getenv("FLASK_PORT", 5000),
+        os.getenv("FLASK_DEBUG", False)
     )
