@@ -28,11 +28,16 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-      
+
       - name: Install dependencies
-        run: pip install -r requirements.txt
-        
+        run: make init
+
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+      - name: Run tests
+        run: make test
+
+      - name: Build Docker image
+        run: make build
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
@@ -64,18 +69,14 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
-      
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FF7667BBE78D4BCA9D6EA16884033928 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_3E2C0872DA254AED8B4EC9C80C23829F }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C725B752E05D4FEF804D0EB08D435CE7 }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'healthapp-python'
           slot-name: 'Production'
-          

@@ -82,7 +82,7 @@ make build
 - Dockerfile : Conteneurise l'application.
 - Makefile : Automatise les tâches.
 - requirements.txt : Liste des dépendances Python du projet.
-- ci-cd.yml : Workflow GitHub Actions pour le pipeline CI/CD.
+- main_healthapp-python.yml : Workflow GitHub Actions pour le pipeline CI/CD.
 
 ## Déploiement sur Azure
 
