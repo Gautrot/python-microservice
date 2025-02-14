@@ -10,13 +10,11 @@ pour le pipeline CI/CD.
 
 <!-- TOC -->
 
-* [Python microservice](#python-microservice)
-    * [Sommaire](#sommaire)
-    * [Fonctionnalités](#fonctionnalités)
-    * [Prérequis](#prérequis)
-    * [Installation et Configuration](#installation-et-configuration)
-    * [Structure du Projet](#structure-du-projet)
-    * [Déploiement sur Azure](#déploiement-sur-azure)
+* [Fonctionnalités](#fonctionnalités)
+* [Prérequis](#prérequis)
+* [Installation et Configuration](#installation-et-configuration)
+* [Structure du Projet](#structure-du-projet)
+* [Déploiement sur Azure](#déploiement-sur-azure)
 
 <!-- TOC -->
 
@@ -27,7 +25,7 @@ pour le pipeline CI/CD.
 
 ## Prérequis
 
-- Python 3.13
+- Python 3.12
 - Docker
 - Microsoft Azure
 
@@ -50,8 +48,9 @@ make init
 
 3. **Execution des taches**
 
-Cette commande lance le site en local. Vous pouvez changer les variables d'environnements dans un fichier `.env`. Si
-vous êtes sous macOS, il est nécessaire d'utiliser le port `5001`
+Cette commande lance le site en local. Vous pouvez changer les variables d'environnements dans un fichier `.env`. Le
+fichier `.env.template` sert de repère des variables à utiliser pour le projet. Si vous êtes sous macOS, il est
+nécessaire d'utiliser le port `5001`
 
 ```bash
 make run
@@ -74,23 +73,38 @@ make build
 ## Structure du Projet
 
 - app.py : Définit l'API Flask avec les endpoints `/bmi` et `/bmr`.
-- person.py : Contient les fonctions utilitaires pour calculer l'IMC et le TMB.
-- tests : Tests unitaires pour valider l'API.
+- classes : Les classes Python du projet.
+    - person.py : Contient les fonctions utilitaires pour calculer l'IMC et le TMB.
+- tests : Les tests unitaires.
+    - test_health_calculator.py : Les tests unitaires pour valider l'API.
+- templates : Les modèles HTML du projet.
+- static : Les contenus statiques du projet (images, styles, etc.).
 - Dockerfile : Conteneurise l'application.
-- Makefile : Automatise les tâches de configuration, de test, d'exécution et de construction.
-- requirements.txt : Liste des dépendances du projet.
+- Makefile : Automatise les tâches.
+- requirements.txt : Liste des dépendances Python du projet.
 - ci-cd.yml : Workflow GitHub Actions pour le pipeline CI/CD.
 
 ## Déploiement sur Azure
 
-1. **Créer un Azure App Service**
+1. **Créer un Resource Group**
+    - Créez un nouveau Resource Group pour héberger le service de l'application.
+
+2. **Créer un Azure App Service**
     - Créez un nouveau Web App dans Azure App Service pour héberger l'application.
 
-2. **Configurer le profil de publication**
-    - Téléchargez le profil de publication depuis Azure App Service.
-    - Ajoutez un secret dans les paramètres du dépôt GitHub nommé AZURE_WEBAPP_PUBLISH_PROFILE et collez le contenu du
-      profil.
+3. **Configurer le profil de déploiement**
+    - Ajoutez un secret dans les paramètres du dépôt GitHub nommé `AZURE_CREDENTIALS` et collez le contenu du secret
+      comme ceci :
 
-3. **Déclencher le déploiement**
+```json
+{
+  "clientId": "",
+  "clientSecret": "",
+  "subscriptionId": "",
+  "tenantId": ""
+}
+```
+
+4. **Déclencher le déploiement**
     - Poussez les modifications de code vers la branche principale pour déclencher le pipeline CI/CD et déployer sur
       Azure.
